@@ -88,8 +88,8 @@ export async function exchangeForLongLivedToken(shortLivedToken: string): Promis
   const data = await metaApiFetch('/oauth/access_token', shortLivedToken, {
     params: {
       grant_type: 'fb_exchange_token',
-      client_id: env.META_APP_ID,
-      client_secret: env.META_APP_SECRET,
+      client_id: env.META_APP_ID ?? '',
+      client_secret: env.META_APP_SECRET ?? '',
       fb_exchange_token: shortLivedToken,
     },
   });

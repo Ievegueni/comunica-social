@@ -64,7 +64,11 @@ export async function webhooksRoutes(app: FastifyInstance) {
 
       const body = JSON.stringify(request.body);
       const expectedSignature =
-        'sha256=' + crypto.createHmac('sha256', env.META_APP_SECRET).update(body).digest('hex');
+        'sha256=' +
+        crypto
+          .createHmac('sha256', env.META_APP_SECRET ?? '')
+          .update(body)
+          .digest('hex');
 
       if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
         logger.warn('Invalid webhook signature');

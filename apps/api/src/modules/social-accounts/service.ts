@@ -12,6 +12,10 @@ import { ConnectAccountInput } from './schemas.js';
 const META_OAUTH_URL = 'https://www.facebook.com/v18.0/dialog/oauth';
 
 export function getMetaOAuthUrl(state: string) {
+  if (!env.META_APP_ID || !env.META_REDIRECT_URI) {
+    throw new AppError(500, 'Meta integration not configured');
+  }
+
   const params = new URLSearchParams({
     client_id: env.META_APP_ID,
     redirect_uri: env.META_REDIRECT_URI,
@@ -35,6 +39,10 @@ export function getMetaOAuthUrl(state: string) {
 }
 
 export async function exchangeCodeForToken(code: string): Promise<string> {
+  if (!env.META_APP_ID || !env.META_APP_SECRET || !env.META_REDIRECT_URI) {
+    throw new AppError(500, 'Meta integration not configured');
+  }
+
   const url = new URL('https://graph.facebook.com/v18.0/oauth/access_token');
   url.searchParams.set('client_id', env.META_APP_ID);
   url.searchParams.set('client_secret', env.META_APP_SECRET);
