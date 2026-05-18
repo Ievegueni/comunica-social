@@ -36,9 +36,11 @@ COPY --from=builder /app/packages/shared/package.json ./packages/shared/
 
 RUN pnpm install --frozen-lockfile --prod
 
-COPY --from=builder /app/apps/api/dist ./apps/api/dist
+# Re-generate Prisma client in production node_modules
 COPY --from=builder /app/apps/api/prisma ./apps/api/prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+RUN cd apps/api && npx prisma generate
+
+COPY --from=builder /app/apps/api/dist ./apps/api/dist
 
 WORKDIR /app/apps/api
 
