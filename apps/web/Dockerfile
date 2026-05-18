@@ -24,7 +24,7 @@ RUN pnpm --filter @comunica/web run build
 FROM nginx:alpine AS runner
 
 COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
-COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
+COPY apps/web/nginx.conf /etc/nginx/templates/default.conf.template
 
 EXPOSE 80
 
