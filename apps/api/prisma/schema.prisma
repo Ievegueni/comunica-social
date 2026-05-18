@@ -1,0 +1,319 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ ENUMS ============
+
+enum Country {
+  AO
+  MZ
+  CV
+  ST
+  GW
+}
+
+enum TenantStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  EDITOR
+  APPROVER
+  VIEWER
+}
+
+enum UserStatus {
+  ACTIVE
+  INVITED
+  DISABLED
+}
+
+enum Platform {
+  FACEBOOK
+  INSTAGRAM
+}
+
+enum SocialAccountStatus {
+  ACTIVE
+  TOKEN_EXPIRED
+  REVOKED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum PostStatus {
+  DRAFT
+  PENDING_APPROVAL
+  SCHEDULED
+  PUBLISHING
+  PUBLISHED
+  FAILED
+  CANCELLED
+}
+
+enum PostSource {
+  MANUAL
+  AI_GENERATED
+}
+
+enum InboxType {
+  COMMENT_FB
+  COMMENT_IG
+  DM_MESSENGER
+  DM_INSTAGRAM
+}
+
+enum InboxStatus {
+  UNREAD
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+enum AIJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// ============ MODELS ============
+
+model Tenant {
+  id                  String       @id @default(cuid())
+  name                String
+  slug                String       @unique
+  country             Country
+  approvalRequired    Boolean      @default(false)
+  aiGenerationEnabled Boolean      @default(false)
+  status              TenantStatus @default(ACTIVE)
+  createdAt           DateTime     @default(now())
+
+  users            User[]
+  socialAccounts   SocialAccount[]
+  mediaFolders     MediaFolder[]
+  mediaAssets      MediaAsset[]
+  posts            Post[]
+  inboxItems       InboxItem[]
+  aiGenerationJobs AIGenerationJob[]
+  auditLogs        AuditLog[]
+}
+
+model User {
+  id           String     @id @default(cuid())
+  tenantId     String
+  email        String     @unique
+  passwordHash String
+  name         String
+  role         Role       @default(EDITOR)
+  isSuperAdmin Boolean    @default(false)
+  status       UserStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now())
+
+  tenant           Tenant            @relation(fields: [tenantId], references: [id])
+  createdPosts     Post[]            @relation("PostCreator")
+  approvedPosts    Post[]            @relation("PostApprover")
+  aiGenerationJobs AIGenerationJob[]
+
+  @@index([tenantId])
+}
+
+model SocialAccount {
+  id               String              @id @default(cuid())
+  tenantId         String
+  platform         Platform
+  externalId       String
+  name             String
+  accessTokenEnc   String
+  tokenExpiresAt   DateTime
+  pageId           String?
+  status           SocialAccountStatus @default(ACTIVE)
+  connectedAt      DateTime            @default(now())
+  lastTokenRefresh DateTime?
+
+  tenant     Tenant      @relation(fields: [tenantId], references: [id])
+  posts      Post[]
+  inboxItems InboxItem[]
+
+  @@unique([tenantId, platform, externalId])
+  @@index([tenantId])
+  @@index([tokenExpiresAt])
+}
+
+model MediaFolder {
+  id        String   @id @default(cuid())
+  tenantId  String
+  name      String
+  parentId  String?
+  createdAt DateTime @default(now())
+
+  tenant   Tenant        @relation(fields: [tenantId], references: [id])
+  parent   MediaFolder?  @relation("FolderTree", fields: [parentId], references: [id])
+  children MediaFolder[] @relation("FolderTree")
+  assets   MediaAsset[]
+
+  @@index([tenantId])
+}
+
+model MediaAsset {
+  id           String    @id @default(cuid())
+  tenantId     String
+  folderId     String?
+  type         MediaType
+  cloudinaryId String
+  url          String
+  thumbnailUrl String?
+  filename     String
+  sizeBytes    Int
+  width        Int?
+  height       Int?
+  durationSec  Int?
+  tags         String[]
+  createdAt    DateTime  @default(now())
+
+  tenant    Tenant       @relation(fields: [tenantId], references: [id])
+  folder    MediaFolder? @relation(fields: [folderId], references: [id])
+  postMedia PostMedia[]
+
+  @@index([tenantId])
+  @@index([tenantId, folderId])
+}
+
+model Post {
+  id              String     @id @default(cuid())
+  tenantId        String
+  socialAccountId String
+  createdById     String
+  approvedById    String?
+  content         String     @db.Text
+  scheduledFor    DateTime
+  publishedAt     DateTime?
+  externalPostId  String?
+  status          PostStatus @default(DRAFT)
+  source          PostSource @default(MANUAL)
+  errorMessage    String?
+  retryCount      Int        @default(0)
+  approvedAt      DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  tenant        Tenant        @relation(fields: [tenantId], references: [id])
+  socialAccount SocialAccount @relation(fields: [socialAccountId], references: [id])
+  createdBy     User          @relation("PostCreator", fields: [createdById], references: [id])
+  approvedBy    User?         @relation("PostApprover", fields: [approvedById], references: [id])
+  media         PostMedia[]
+  metrics       PostMetric[]
+
+  @@index([tenantId, status])
+  @@index([tenantId, scheduledFor])
+  @@index([tenantId, status, scheduledFor])
+  @@index([socialAccountId])
+  @@index([createdById])
+}
+
+model PostMetric {
+  id          String   @id @default(cuid())
+  postId      String
+  reach       Int      @default(0)
+  impressions Int      @default(0)
+  likes       Int      @default(0)
+  comments    Int      @default(0)
+  shares      Int      @default(0)
+  saves       Int      @default(0)
+  collectedAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId, collectedAt])
+}
+
+model PostMedia {
+  postId       String
+  mediaAssetId String
+  order        Int
+
+  post       Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id])
+
+  @@id([postId, mediaAssetId])
+}
+
+model AIGenerationJob {
+  id           String      @id @default(cuid())
+  tenantId     String
+  createdById  String
+  briefing     String      @db.Text
+  tone         String
+  count        Int
+  status       AIJobStatus @default(PENDING)
+  result       Json?
+  errorMessage String?
+  createdAt    DateTime    @default(now())
+  completedAt  DateTime?
+
+  tenant    Tenant @relation(fields: [tenantId], references: [id])
+  createdBy User   @relation(fields: [createdById], references: [id])
+
+  @@index([tenantId, createdAt])
+}
+
+model InboxItem {
+  id              String      @id @default(cuid())
+  tenantId        String
+  socialAccountId String
+  type            InboxType
+  externalId      String
+  parentPostId    String?
+  fromUserId      String
+  fromUserName    String
+  content         String      @db.Text
+  status          InboxStatus @default(UNREAD)
+  receivedAt      DateTime
+  repliedAt       DateTime?
+  repliedById     String?
+
+  tenant        Tenant        @relation(fields: [tenantId], references: [id])
+  socialAccount SocialAccount @relation(fields: [socialAccountId], references: [id])
+  replies       InboxReply[]
+
+  @@unique([socialAccountId, externalId])
+  @@index([tenantId, status])
+  @@index([receivedAt])
+}
+
+model InboxReply {
+  id          String   @id @default(cuid())
+  inboxItemId String
+  content     String   @db.Text
+  sentById    String
+  sentAt      DateTime @default(now())
+  externalId  String?
+
+  inboxItem InboxItem @relation(fields: [inboxItemId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  tenantId   String
+  userId     String?
+  action     String
+  entityType String
+  entityId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, createdAt])
+}

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMUNICA Social - Tutorial da Plataforma</title>
+  <style>
+    @page {
+      margin: 2cm;
+      size: A4;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #1a1a2e;
+      line-height: 1.7;
+      font-size: 11pt;
+      background: #fff;
+    }
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      page-break-after: always;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: #fff;
+      padding: 4rem 2rem;
+    }
+    .cover h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+    }
+    .cover .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.85;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+    .cover .version {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      margin-top: 4rem;
+    }
+    .cover .logo-badge {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 60px rgba(99,102,241,0.3);
+    }
+    .toc {
+      page-break-after: always;
+      padding: 3rem 2rem;
+    }
+    .toc h2 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      color: #1a1a2e;
+      border-bottom: 3px solid #6366f1;
+      padding-bottom: 0.5rem;
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc-counter;
+    }
+    .toc ol li {
+      counter-increment: toc-counter;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: 1.05rem;
+    }
+    .toc ol li::before {
+      content: counter(toc-counter) ".";
+      font-weight: 700;
+      color: #6366f1;
+      margin-right: 0.8rem;
+    }
+    .toc ol li a {
+      color: #1a1a2e;
+      text-decoration: none;
+    }
+    .chapter {
+      page-break-before: always;
+      padding: 2rem;
+    }
+    .chapter:first-of-type {
+      page-break-before: avoid;
+    }
+    .chapter h2 {
+      font-size: 1.6rem;
+      color: #1a1a2e;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid #6366f1;
+    }
+    .chapter h3 {
+      font-size: 1.2rem;
+      color: #0f3460;
+      margin-top: 2rem;
+      margin-bottom: 0.8rem;
+    }
+    .chapter h4 {
+      font-size: 1rem;
+      color: #6366f1;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .chapter p {
+      margin-bottom: 1rem;
+    }
+    .chapter ul, .chapter ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    .chapter li {
+      margin-bottom: 0.4rem;
+    }
+    .step-box {
+      background: #f8f9ff;
+      border-left: 4px solid #6366f1;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .step-box .step-number {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: #6366f1;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+    }
+    .warning-box {
+      background: #fff7ed;
+      border-left: 4px solid #f59e0b;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .warning-box::before {
+      content: "Atencion: ";
+      font-weight: 700;
+      color: #d97706;
+    }
+    .tip-box {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .tip-box::before {
+      content: "Dica: ";
+      font-weight: 700;
+      color: #16a34a;
+    }
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .info-box::before {
+      content: "Info: ";
+      font-weight: 700;
+      color: #2563eb;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    table th {
+      background: #f1f5f9;
+      padding: 0.7rem;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    table td {
+      padding: 0.6rem 0.7rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    table tr:hover td {
+      background: #f8fafc;
+    }
+    .screenshot-placeholder {
+      background: #f1f5f9;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      color: #64748b;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+    .role-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .role-owner { background: #fef3c7; color: #92400e; }
+    .role-admin { background: #dbeafe; color: #1e40af; }
+    .role-editor { background: #d1fae5; color: #065f46; }
+    .role-approver { background: #ede9fe; color: #5b21b6; }
+    .role-viewer { background: #f1f5f9; color: #475569; }
+    .footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: #64748b;
+      font-size: 0.85rem;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 3rem;
+    }
+    @media print {
+      .chapter { page-break-before: always; }
+      .cover { page-break-after: always; }
+      .toc { page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CAPA -->
+  <div class="cover">
+    <div class="logo-badge">CS</div>
+    <h1>COMUNICA Social</h1>
+    <p class="subtitle">Tutorial Completo da Plataforma</p>
+    <p style="font-size: 1rem; opacity: 0.7; max-width: 500px;">
+      Guia passo-a-passo para gestao e automacao de redes sociais no mercado PALOP
+    </p>
+    <p class="version">Versao 1.0 &mdash; Maio 2026</p>
+  </div>
+
+  <!-- INDICE -->
+  <div class="toc">
+    <h2>Indice</h2>
+    <ol>
+      <li><a href="#intro">Introducao a Plataforma</a></li>
+      <li><a href="#primeiros-passos">Primeiros Passos</a></li>
+      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#contas-sociais">Conectar Contas Sociais</a></li>
+      <li><a href="#media">Biblioteca de Media</a></li>
+      <li><a href="#posts">Criar e Gerir Posts</a></li>
+      <li><a href="#calendario">Calendario Editorial</a></li>
+      <li><a href="#ia">Geracao de Conteudo com IA</a></li>
+      <li><a href="#aprovacoes">Fluxo de Aprovacoes</a></li>
+      <li><a href="#inbox">Inbox Unificado</a></li>
+      <li><a href="#analytics">Analytics e Metricas</a></li>
+      <li><a href="#utilizadores">Gestao de Utilizadores</a></li>
+      <li><a href="#roles">Perfis e Permissoes</a></li>
+      <li><a href="#faq">Perguntas Frequentes</a></li>
+    </ol>
+  </div>
+
+  <!-- CAPITULO 1: INTRODUCAO -->
+  <div class="chapter" id="intro">
+    <h2>1. Introducao a Plataforma</h2>
+
+    <p>
+      <strong>COMUNICA Social</strong> e uma plataforma completa de gestao de redes sociais
+      desenvolvida especificamente para o mercado PALOP (Angola, Mocambique, Cabo Verde,
+      Sao Tome e Principe, Guine-Bissau).
+    </p>
+
+    <h3>O que pode fazer com a plataforma?</h3>
+    <ul>
+      <li><strong>Agendar e publicar</strong> conteudo em Facebook e Instagram</li>
+      <li><strong>Gerar conteudo</strong> automaticamente com Inteligencia Artificial</li>
+      <li><strong>Gerir uma biblioteca</strong> de imagens e videos centralizada</li>
+      <li><strong>Responder a comentarios</strong> e mensagens num unico lugar</li>
+      <li><strong>Acompanhar metricas</strong> de desempenho dos posts</li>
+      <li><strong>Colaborar em equipa</strong> com fluxos de aprovacao editorial</li>
+    </ul>
+
+    <h3>Redes Sociais Suportadas</h3>
+    <table>
+      <tr>
+        <th>Rede</th>
+        <th>Publicacao</th>
+        <th>Comentarios</th>
+        <th>Mensagens</th>
+        <th>Metricas</th>
+      </tr>
+      <tr>
+        <td>Facebook (Paginas)</td>
+        <td>Sim</td>
+        <td>Sim</td>
+        <td>Sim (Messenger)</td>
+        <td>Sim</td>
+      </tr>
+      <tr>
+        <td>Instagram (Business)</td>
+        <td>Sim</td>
+        <td>Sim</td>
+        <td>Sim (DMs)</td>
+        <td>Sim</td>
+      </tr>
+    </table>
+
+    <div class="info-box">
+      A plataforma suporta multi-tenancy, ou seja, cada empresa tem o seu espaco isolado
+      com os seus proprios utilizadores, contas sociais e conteudo.
+    </div>
+  </div>
+
+  <!-- CAPITULO 2: PRIMEIROS PASSOS -->
+  <div class="chapter" id="primeiros-passos">
+    <h2>2. Primeiros Passos</h2>
+
+    <h3>2.1 Criar Conta (Registo)</h3>
+    <p>Para comecar a usar a plataforma, o proprietario da empresa deve criar uma conta:</p>
+
+    <div class="step-box">
+      <span class="step-number">1</span>
+      Aceda a pagina de registo em <strong>/signup</strong>
+    </div>
+    <div class="step-box">
+      <span class="step-number">2</span>
+      Preencha o nome da empresa, o seu nome, email e password
+    </div>
+    <div class="step-box">
+      <span class="step-number">3</span>
+      Selecione o pais da empresa (AO, MZ, CV, ST, GW)
+    </div>
+    <div class="step-box">
+      <span class="step-number">4</span>
+      Clique em <strong>Criar conta</strong>. Sera redirecionado para o Dashboard.
+    </div>
+
+    <div class="tip-box">
+      O primeiro utilizador registado torna-se automaticamente o <strong>OWNER</strong> (proprietario)
+      da organizacao e tem acesso total a todas as funcionalidades.
+    </div>
+
+    <h3>2.2 Login</h3>
+    <p>
+      Aceda a pagina de login em <strong>/login</strong>, introduza o seu email e password,
+      e clique em <strong>Entrar</strong>.
+    </p>
+
+    <h3>2.3 Recuperacao de Password</h3>
+    <p>
+      Se esqueceu a password, clique em "Esqueci a password" na pagina de login.
+      Sera enviado um email com um link de recuperacao (valido por 1 hora).
+    </p>
+
+    <h3>2.4 Convite de Utilizadores</h3>
+    <p>
+      O Owner ou Admin pode convidar novos membros para a equipa. O convidado recebera
+      um email com um link unico para definir a sua password e activar a conta.
+    </p>
+  </div>
+
+  <!-- CAPITULO 3: DASHBOARD -->
+  <div class="chapter" id="dashboard">
+    <h2>3. Dashboard</h2>
+
+    <p>
+      O Dashboard e a pagina inicial apos o login. Apresenta um resumo rapido do estado
+      da sua conta:
+    </p>
+
+    <ul>
+      <li><strong>Empresa</strong> &mdash; Nome da sua organizacao</li>
+      <li><strong>Contas Sociais</strong> &mdash; Numero de contas Facebook/Instagram conectadas</li>
+      <li><strong>Posts Agendados</strong> &mdash; Quantos posts estao programados para publicacao</li>
+      <li><strong>Pendentes de Aprovacao</strong> &mdash; Posts que aguardam revisao (se aprovacoes estiverem activas)</li>
+    </ul>
+
+    <div class="screenshot-placeholder">
+      [Imagem: Vista do Dashboard com os 4 cards de resumo]
+    </div>
+
+    <div class="tip-box">
+      O Dashboard e acessivel a todos os perfis de utilizador e permite uma visao rapida
+      sem necessidade de navegar para seccoes especificas.
+    </div>
+  </div>
+
+  <!-- CAPITULO 4: CONTAS SOCIAIS -->
+  <div class="chapter" id="contas-sociais">
+    <h2>4. Conectar Contas Sociais</h2>
+
+    <p>
+      Antes de publicar conteudo, e necessario conectar as suas paginas de Facebook
+      e/ou contas de Instagram Business a plataforma.
+    </p>
+
+    <div class="warning-box">
+      Apenas utilizadores com perfil <strong>OWNER</strong> ou <strong>ADMIN</strong> podem
+      conectar e desconectar contas sociais.
+    </div>
+
+    <h3>4.1 Conectar uma Conta</h3>
+
+    <div class="step-box">
+      <span class="step-number">1</span>
+      Navegue para <strong>Contas Sociais</strong> no menu lateral
+    </div>
+    <div class="step-box">
+      <span class="step-number">2</span>
+      Clique em <strong>Conectar conta</strong>
+    </div>
+    <div class="step-box">
+      <span class="step-number">3</span>
+      Uma janela do Facebook abrira. Faca login e autorize as permissoes solicitadas
+    </div>
+    <div class="step-box">
+      <span class="step-number">4</span>
+      Selecione quais paginas FB e contas IG deseja conectar da lista apresentada
+    </div>
+    <div class="step-box">
+      <span class="step-number">5</span>
+      Clique em <strong>Conectar</strong> em cada conta desejada
+    </div>
+
+    <h3>4.2 Estado das Contas</h3>
+    <table>
+      <tr>
+        <th>Estado</th>
+        <th>Significado</th>
+        <th>Accao Necessaria</th>
+      </tr>
+      <tr>
+        <td><span style="color: #16a34a; font-weight: 600;">Activo</span></td>
+        <td>Conta conectada e funcional</td>
+        <td>Nenhuma</td>
+      </tr>
+      <tr>
+        <td><span style="color: #d97706; font-weight: 600;">Token Expirado</span></td>
+        <td>O token de acesso expirou</td>
+        <td>Reconectar a conta</td>
+      </tr>
+    </table>
+
+    <div class="info-box">
+      Os tokens sao renovados automaticamente pela plataforma a cada 50 dias.
+      Se a renovacao falhar, o estado mudara para "Token Expirado" e sera necessario reconectar.
+    </div>
+
+    <h3>4.3 Desconectar uma Conta</h3>
+    <p>
+      Para desconectar uma conta, clique em <strong>Desconectar</strong> no card da conta.
+      Note que nao e possivel desconectar uma conta que tenha posts activos (agendados ou pendentes).
+      Cancele os posts primeiro.
+    </p>
+  </div>
+
+  <!-- CAPITULO 5: MEDIA -->
+  <div class="chapter" id="media">
+    <h2>5. Biblioteca de Media</h2>
+
+    <p>
+      A Biblioteca de Media e o repositorio central de todas as imagens e videos
+      que pode utilizar nos seus posts.
+    </p>
+
+    <h3>5.1 Organizar em Pastas</h3>
+    <p>
+      Pode criar uma estrutura hierarquica de pastas para organizar os seus ficheiros:
+    </p>
+    <ul>
+      <li>Clique em <strong>Nova pasta</strong> para criar uma pasta</li>
+      <li>Navegue pelas pastas clicando nelas</li>
+      <li>Use o breadcrumb no topo para voltar atras</li>
+    </ul>
+
+    <h3>5.2 Fazer Upload</h3>
+
+    <div class="step-box">
+      <span class="step-number">1</span>
+      Navegue para a pasta onde deseja guardar os ficheiros
+    </div>
+    <div class="step-box">
+      <span class="step-number">2</span>
+      Clique em <strong>Upload</strong> ou arraste ficheiros para a area
+    </div>
+    <div class="step-box">
+      <span class="step-number">3</span>
+      Selecione uma ou mais imagens/videos do seu computador
+    </div>
+    <div class="step-box">
+      <span class="step-number">4</span>
+      Aguarde o upload completar. Os ficheiros aparecerao na grelha.
+    </div>
+
+    <h3>5.3 Formatos Suportados</h3>
+    <table>
+      <tr>
+        <th>Tipo</th>
+        <th>Formatos</th>
+        <th>Tamanho Maximo</th>
+      </tr>
+      <tr>
+        <td>Imagem</td>
+        <td>JPG, PNG, GIF, WebP</td>
+        <td>200 MB</td>
+      </tr>
+      <tr>
+        <td>Video</td>
+        <td>MP4, MOV</td>
+        <td>200 MB</td>
+      </tr>
+    </table>
+
+    <h3>5.4 Tags e Pesquisa</h3>
+    <p>
+      Clique numa imagem/video para abrir o painel de detalhes. Ai pode:
+    </p>
+    <ul>
+      <li>Ver dimensoes, tamanho e duracao (videos)</li>
+      <li>Adicionar <strong>tags</strong> para facilitar a pesquisa posterior</li>
+      <li>Remover tags existentes</li>
+    </ul>
+    <p>
+      Use a barra de pesquisa e o filtro de tipo (Imagem/Video) para encontrar rapidamente
+      os ficheiros que precisa.
+    </p>
+  </div>
+
+  <!-- CAPITULO 6: POSTS -->
+  <div class="chapter" id="posts">
+    <h2>6. Criar e Gerir Posts</h2>
+
+    <p>
+      A seccao de Posts e o coracao da plataforma. Aqui pode criar, editar, agendar
+      e monitorizar todos os seus posts para Facebook e Instagram.
+    </p>
+
+    <h3>6.1 Criar um Novo Post</h3>
+
+    <div class="step-box">
+      <span class="step-number">1</span>
+      Clique em <strong>Novo post</strong> na pagina de Posts (ou use o calendario)
+    </div>
+    <div class="step-box">
+      <span class="step-number">2</span>
+      <strong>Selecione a conta destino</strong> &mdash; Escolha para qual pagina FB ou conta IG publicar
+    </div>
+    <div class="step-box">
+      <span class="step-number">3</span>
+      <strong>Escreva o conteudo</strong> &mdash; O editor mostra o contador de caracteres (2200 para IG, 63206 para FB)
+    </div>
+    <div class="step-box">
+      <span class="step-number">4</span>
+      <strong>Adicione media</strong> (opcional) &mdash; Selecione ate 10 imagens/videos da biblioteca
+    </div>
+    <div class="step-box">
+      <span class="step-number">5</span>
+      <strong>Defina a data/hora</strong> de publicacao
+    </div>
+    <div class="step-box">
+      <span class="step-number">6</span>
+      Clique em <strong>Criar post</strong>
+    </div>
+
+    <div class="screenshot-placeholder">
+      [Imagem: Editor de posts com preview lateral]
+    </div>
+
+    <h3>6.2 Estados de um Post</h3>
+    <table>
+      <tr>
+        <th>Estado</th>
+        <th>Descricao</th>
+      </tr>
+      <tr>
+        <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;">Rascunho</span></td>
+        <td>Post guardado mas nao agendado para publicacao</td>
+      </tr>
+      <tr>
+        <td><span style="background:#fef3c7;padding:2px 8px;border-radius:10px;">Pendente</span></td>
+        <td>Aguarda aprovacao de um Approver (quando aprovacoes estao activas)</td>
+      </tr>
+      <tr>
+        <td><span style="background:#dbeafe;padding:2px 8px;border-radius:10px;">Agendado</span></td>
+        <td>Aprovado e programado para publicar na data/hora definida</td>
+      </tr>
+      <tr>
+        <td><span style="background:#ede9fe;padding:2px 8px;border-radius:10px;">A publicar</span></td>
+        <td>Publicacao em curso (normalmente dura poucos segundos)</td>
+      </tr>
+      <tr>
+        <td><span style="background:#d1fae5;padding:2px 8px;border-radius:10px;">Publicado</span></td>
+        <td>Post publicado com sucesso na rede social</td>
+      </tr>
+      <tr>
+        <td><span style="background:#fee2e2;padding:2px 8px;border-radius:10px;">Falhou</span></td>
+        <td>A publicacao falhou (ver mensagem de erro para detalhes)</td>
+      </tr>
+      <tr>
+        <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;color:#6b7280;">Cancelado</span></td>
+        <td>Post cancelado pelo utilizador antes de ser publicado</td>
+      </tr>
+    </table>
+
+    <h3>6.3 Accoes Disponiveis</h3>
+    <ul>
+      <li><strong>Editar</strong> &mdash; Modificar conteudo (apenas em Rascunho ou Agendado)</li>
+      <li><strong>Publicar agora</strong> &mdash; Forcar publicacao imediata</li>
+      <li><strong>Cancelar</strong> &mdash; Cancelar publicacao agendada</li>
+      <li><strong>Duplicar</strong> &mdash; Criar copia do post (util para adaptar para outra rede)</li>
+      <li><strong>Eliminar</strong> &mdash; Apagar permanentemente (apenas Rascunho ou Cancelado)</li>
+    </ul>
+
+    <h3>6.4 Auto-Save</h3>
+    <div class="tip-box">
+      Quando esta a editar um post em estado Rascunho, a plataforma guarda automaticamente
+      as alteracoes a cada 2 segundos. Nunca perde o seu trabalho!
+    </div>
+
+    <h3>6.5 Retentativas Automaticas</h3>
+    <p>
+      Se uma publicacao falhar (ex: problema temporario na API da Meta), a plataforma
+      tenta automaticamente ate 3 vezes com intervalos crescentes (1min, 5min, 30min).
+      Apos esgotar as tentativas, o post fica com estado "Falhou" e pode republicar manualmente.
+    </p>
+  </div>
+
+  <!-- CAPITULO 7: CALENDARIO -->
+  <div class="chapter" id="calendario">
+    <h2>7. Calendario Editorial</h2>
+
+    <p>
+      O Calendario oferece uma vista visual de todos os posts agendados, publicados e em rascunho,
+      organizado cronologicamente.
+    </p>
+
+    <h3>7.1 Vistas Disponiveis</h3>
+    <table>
+      <tr>
+        <th>Vista</th>
+        <th>Descricao</th>
+      </tr>
+      <tr>
+        <td>Mes</td>
+        <td>Vista mensal com ate 3 posts por dia visiveis</td>
+      </tr>
+      <tr>
+        <td>Semana</td>
+        <td>Vista semanal com slots por hora</td>
+      </tr>
+      <tr>
+        <td>Dia</td>
+        <td>Vista detalhada de um unico dia</td>
+      </tr>
+      <tr>
+        <td>Lista</td>
+        <td>Lista cronologica dos proximos posts</td>
+      </tr>
+    </table>
+
+    <h3>7.2 Codificacao por Cores</h3>
+    <p>Os posts aparecem com cores diferentes conforme o seu estado:</p>
+    <ul>
+      <li><span style="color:#6b7280;">Cinzento</span> = Rascunho</li>
+      <li><span style="color:#d97706;">Laranja</span> = Pendente aprovacao</li>
+      <li><span style="color:#2563eb;">Azul</span> = Agendado</li>
+      <li><span style="color:#16a34a;">Verde</span> = Publicado</li>
+      <li><span style="color:#dc2626;">Vermelho</span> = Falhou</li>
+    </ul>
+    <p>
+      A borda do evento indica a plataforma: <span style="color:#2563eb;">azul</span> para Facebook,
+      <span style="color:#ec4899;">rosa</span> para Instagram.
+    </p>
+
+    <h3>7.3 Reagendar com Drag & Drop</h3>
+    <p>
+      Para reagendar um post, basta <strong>arrastar e largar</strong> o evento para outra data/hora.
+      Isto funciona apenas para posts em estado Rascunho ou Agendado.
+    </p>
+
+    <h3>7.4 Criar Post a partir do Calendario</h3>
+    <p>
+      Clique em qualquer dia vazio no calendario para criar um novo post ja pre-preenchido
+      com essa data de agendamento.
+    </p>
+
+    <h3>7.5 Filtros</h3>
+    <p>
+      Use os filtros no topo para filtrar por:
+    </p>
+    <ul>
+      <li><strong>Conta social</strong> &mdash; Ver apenas posts de uma conta especifica</li>
+      <li><strong>Estado</strong> &mdash; Ver apenas agendados, publicados, etc.</li>
+    </ul>
+  </div>
+
+  <!-- CAPITULO 8: IA -->
+  <div class="chapter" id="ia">
+    <h2>8. Geracao de Conteudo com IA</h2>
+
+    <p>
+      A plataforma integra inteligencia artificial (Claude) para gerar sugestoes de posts
+      automaticamente com base num briefing fornecido por si.
+    </p>
+
+    <div class="info-box">
+      Esta funcionalidade deve ser activada por um Admin na configuracao do tenant
+      (campo <em>aiGenerationEnabled</em>).
+    </div>
+
+    <h3>8.1 Como Gerar Conteudo</h3>
+
+    <div class="step-box">
+      <span class="step-number">1</span>
+      Navegue para <strong>Gerar IA</strong> no menu lateral
+    </div>
+    <div class="step-box">
+      <span class="step-number">2</span>
+      Preencha o <strong>briefing</strong>: descreva o tema, produto, evento ou promocao
+    </div>
+    <div class="step-box">
+      <span class="step-number">3</span>
+      Selecione o <strong>tom</strong>: profissional, casual, humoristico, inspirador, etc.
+    </div>
+    <div class="step-box">
+      <span class="step-number">4</span>
+      Defina quantos posts deseja gerar (1 a 10)
+    </div>
+    <div class="step-box">
+      <span class="step-number">5</span>
+      Clique em <strong>Gerar</strong> e aguarde (10-30 segundos)
+    </div>
+    <div class="step-box">
+      <span class="step-number">6</span>
+      Revise os posts sugeridos. Cada um inclui texto, hashtags e horario sugerido.
+    </div>
+    <div class="step-box">
+      <span class="step-number">7</span>
+      Selecione os que deseja usar e clique em <strong>Aceitar seleccionados</strong>
+    </div>
+
+    <h3>8.2 O que Acontece Apos Aceitar?</h3>
+    <p>
+      Os posts aceites sao automaticamente criados como Rascunhos (ou Pendentes de Aprovacao,
+      se o fluxo de aprovacao estiver activo). Pode entao edita-los, adicionar media,
+      e agendar individualmente.
+    </p>
+
+    <h3>8.3 Dicas para Melhores Resultados</h3>
+    <ul>
+      <li>Seja especifico no briefing (ex: "Post sobre a nova coleccao de verao 2026 da marca X, focado em jovens angolanos")</li>
+      <li>Indique o publico-alvo</li>
+      <li>Mencione se ha alguma promocao, desconto ou CTA especifico</li>
+      <li>O tom define muito o estilo: "casual" gera posts mais conversacionais, "profissional" mais corporativos</li>
+    </ul>
+  </div>
+
+  <!-- CAPITULO 9: APROVACOES -->
+  <div class="chapter" id="aprovacoes">
+    <h2>9. Fluxo de Aprovacoes</h2>
+
+    <p>
+      O sistema de aprovacoes permite que editores criem conteudo que deve ser revisto
+      e aprovado antes de ser publicado.
+    </p>
+
+    <div class="info-box">
+      As aprovacoes sao activadas por tenant. Quando <em>approvalRequired = true</em>,
+      todos os posts criados por Editors passam automaticamente para estado "Pendente de Aprovacao".
+    </div>
+
+    <h3>9.1 Fluxo de Trabalho</h3>
+    <ol>
+      <li><strong>Editor</strong> cria o post &rarr; estado passa a "Pendente de Aprovacao"</li>
+      <li><strong>Approver</strong> (ou Owner/Admin) revisa o post na seccao "Aprovacoes"</li>
+      <li>Approver pode <strong>Aprovar</strong> (post passa a Agendado) ou <strong>Rejeitar</strong> (post volta a Rascunho com comentario)</li>
+      <li>Se rejeitado, o Editor corrige e resubmete</li>
+    </ol>
+
+    <h3>9.2 Aprovar um Post</h3>
+    <div class="step-box">
+      <span class="step-number">1</span>
+      Navegue para <strong>Aprovacoes</strong> no menu lateral
+    </div>
+    <div class="step-box">
+      <span class="step-number">2</span>
+      Veja a lista de posts pendentes com preview do conteudo
+    </div>
+    <div class="step-box">
+      <span class="step-number">3</span>
+      Clique em <strong>Aprovar</strong> para agendar o post, ou <strong>Rejeitar</strong> indicando o motivo
+    </div>
+
+    <h3>9.3 Rejeicao</h3>
+    <p>
+      Ao rejeitar, deve indicar um motivo (ex: "Erro ortografico no segundo paragrafo" ou
+      "Imagem nao esta alinhada com a marca"). O Editor vera esta mensagem e podera corrigir o post.
+    </p>
+  </div>
+
+  <!-- CAPITULO 10: INBOX -->
+  <div class="chapter" id="inbox">
+    <h2>10. Inbox Unificado</h2>
+
+    <p>
+      O Inbox reune num unico lugar todos os comentarios e mensagens recebidos nas suas
+      contas de Facebook e Instagram.
+    </p>
+
+    <h3>10.1 Tipos de Mensagens</h3>
+    <table>
+      <tr>
+        <th>Tipo</th>
+        <th>Origem</th>
+      </tr>
+      <tr>
+        <td>Comentario FB</td>
+        <td>Comentarios nos posts da pagina Facebook</td>
+      </tr>
+      <tr>
+        <td>Comentario IG</td>
+        <td>Comentarios nos posts do Instagram</td>
+      </tr>
+      <tr>
+        <td>DM Messenger</td>
+        <td>Mensagens directas via Facebook Messenger</td>
+      </tr>
+      <tr>
+        <td>DM Instagram</td>
+        <td>Mensagens directas no Instagram</td>
+      </tr>
+    </table>
+
+    <h3>10.2 Interface Split-View</h3>
+    <p>
+      A interface divide-se em duas partes:
+    </p>
+    <ul>
+      <li><strong>Painel esquerdo</strong> &mdash; Lista de todas as mensagens/comentarios com indicador de nao lido</li>
+      <li><strong>Painel direito</strong> &mdash; Detalhe da conversa seleccionada com historico de respostas</li>
+    </ul>
+
+    <h3>10.3 Responder</h3>
+    <div class="step-box">
+      <span class="step-number">1</span>
+      Selecione uma mensagem/comentario na lista
+    </div>
+    <div class="step-box">
+      <span class="step-number">2</span>
+      Escreva a sua resposta na caixa de texto na parte inferior
+    </div>
+    <div class="step-box">
+      <span class="step-number">3</span>
+      Pressione <strong>Enter</strong> ou clique no botao de enviar
+    </div>
+
+    <p>
+      A resposta e enviada directamente para a rede social (como reply ao comentario
+      ou como mensagem no Messenger/DM Instagram).
+    </p>
+
+    <h3>10.4 Estados</h3>
+    <ul>
+      <li><strong>Nao lida</strong> &mdash; Nova mensagem (indicador azul)</li>
+      <li><strong>Lida</strong> &mdash; Aberta mas sem resposta</li>
+      <li><strong>Respondida</strong> &mdash; Ja foi enviada uma resposta</li>
+      <li><strong>Arquivada</strong> &mdash; Removida da lista activa</li>
+    </ul>
+
+    <div class="tip-box">
+      As mensagens sao automaticamente marcadas como "Lida" quando as abre no painel de detalhe.
+    </div>
+  </div>
+
+  <!-- CAPITULO 11: ANALYTICS -->
+  <div class="chapter" id="analytics">
+    <h2>11. Analytics e Metricas</h2>
+
+    <p>
+      A seccao de Analytics permite acompanhar o desempenho dos seus posts publicados
+      com metricas automaticamente recolhidas apos a publicacao.
+    </p>
+
+    <h3>11.1 Metricas Disponiveis</h3>
+    <table>
+      <tr>
+        <th>Metrica</th>
+        <th>Descricao</th>
+      </tr>
+      <tr>
+        <td>Alcance (Reach)</td>
+        <td>Numero de pessoas unicas que viram o post</td>
+      </tr>
+      <tr>
+        <td>Impressoes</td>
+        <td>Numero total de vezes que o post foi exibido</td>
+      </tr>
+      <tr>
+        <td>Likes</td>
+        <td>Reaccoes/gostos recebidos</td>
+      </tr>
+      <tr>
+        <td>Comentarios</td>
+        <td>Numero de comentarios</td>
+      </tr>
+      <tr>
+        <td>Partilhas</td>
+        <td>Numero de vezes que o post foi partilhado</td>
+      </tr>
+      <tr>
+        <td>Guardados</td>
+        <td>Numero de vezes que o post foi guardado (IG)</td>
+      </tr>
+    </table>
+
+    <h3>11.2 Quando sao Recolhidas?</h3>
+    <p>
+      As metricas sao recolhidas automaticamente em 3 momentos apos a publicacao:
+    </p>
+    <ul>
+      <li><strong>1 hora</strong> depois &mdash; Primeiro indicador de desempenho</li>
+      <li><strong>24 horas</strong> depois &mdash; Metricas do primeiro dia</li>
+      <li><strong>7 dias</strong> depois &mdash; Metricas consolidadas</li>
+    </ul>
+
+    <h3>11.3 Exportar Dados</h3>
+    <p>
+      Clique em <strong>Exportar CSV</strong> para descarregar um ficheiro com todas as metricas
+      dos posts publicados. Pode filtrar por periodo antes de exportar.
+    </p>
+
+    <h3>11.4 Filtros</h3>
+    <ul>
+      <li><strong>Periodo</strong> &mdash; De/Ate (datas)</li>
+      <li><strong>Conta social</strong> &mdash; Filtrar por conta especifica</li>
+    </ul>
+  </div>
+
+  <!-- CAPITULO 12: UTILIZADORES -->
+  <div class="chapter" id="utilizadores">
+    <h2>12. Gestao de Utilizadores</h2>
+
+    <p>
+      A seccao de Utilizadores permite gerir a equipa que tem acesso a plataforma.
+    </p>
+
+    <div class="warning-box">
+      Apenas <strong>OWNER</strong> e <strong>ADMIN</strong> podem aceder a esta seccao.
+    </div>
+
+    <h3>12.1 Convidar Utilizador</h3>
+    <div class="step-box">
+      <span class="step-number">1</span>
+      Clique em <strong>Convidar utilizador</strong>
+    </div>
+    <div class="step-box">
+      <span class="step-number">2</span>
+      Introduza o email e selecione o perfil (Admin, Editor, Approver, ou Viewer)
+    </div>
+    <div class="step-box">
+      <span class="step-number">3</span>
+      O utilizador recebe um email com link para activar a conta
+    </div>
+
+    <h3>12.2 Gerir Utilizadores Existentes</h3>
+    <ul>
+      <li><strong>Alterar perfil</strong> &mdash; Mudar o role de um utilizador</li>
+      <li><strong>Desactivar</strong> &mdash; Bloquear acesso sem eliminar a conta</li>
+    </ul>
+
+    <div class="info-box">
+      O Owner nao pode ser removido nem ter o seu perfil alterado.
+      Apenas pode haver um Owner por organizacao.
+    </div>
+  </div>
+
+  <!-- CAPITULO 13: ROLES -->
+  <div class="chapter" id="roles">
+    <h2>13. Perfis e Permissoes</h2>
+
+    <p>
+      A plataforma usa um sistema de perfis (RBAC) para controlar o acesso as diferentes funcionalidades:
+    </p>
+
+    <table>
+      <tr>
+        <th>Perfil</th>
+        <th>Permissoes</th>
+      </tr>
+      <tr>
+        <td><span class="role-badge role-owner">OWNER</span></td>
+        <td>Acesso total. Gestao de utilizadores, contas, configuracoes, conteudo e analytics. Unico por organizacao.</td>
+      </tr>
+      <tr>
+        <td><span class="role-badge role-admin">ADMIN</span></td>
+        <td>Igual ao Owner excepto que pode ser removido. Gestao completa.</td>
+      </tr>
+      <tr>
+        <td><span class="role-badge role-editor">EDITOR</span></td>
+        <td>Criar/editar posts, gerir media, usar IA, ver analytics, responder inbox.</td>
+      </tr>
+      <tr>
+        <td><span class="role-badge role-approver">APPROVER</span></td>
+        <td>Aprovar/rejeitar posts pendentes. Ver calendario e dashboard.</td>
+      </tr>
+      <tr>
+        <td><span class="role-badge role-viewer">VIEWER</span></td>
+        <td>Apenas leitura. Ver posts, calendario e analytics. Nao pode criar nem editar.</td>
+      </tr>
+    </table>
+
+    <h3>Matriz de Acesso por Seccao</h3>
+    <table>
+      <tr>
+        <th>Seccao</th>
+        <th>OWNER</th>
+        <th>ADMIN</th>
+        <th>EDITOR</th>
+        <th>APPROVER</th>
+        <th>VIEWER</th>
+      </tr>
+      <tr><td>Dashboard</td><td>Sim</td><td>Sim</td><td>Sim</td><td>Sim</td><td>Sim</td></tr>
+      <tr><td>Posts</td><td>Sim</td><td>Sim</td><td>Sim</td><td>-</td><td>-</td></tr>
+      <tr><td>Calendario</td><td>Sim</td><td>Sim</td><td>Sim</td><td>Sim</td><td>Sim</td></tr>
+      <tr><td>Gerar IA</td><td>Sim</td><td>Sim</td><td>Sim</td><td>-</td><td>-</td></tr>
+      <tr><td>Aprovacoes</td><td>Sim</td><td>Sim</td><td>-</td><td>Sim</td><td>-</td></tr>
+      <tr><td>Inbox</td><td>Sim</td><td>Sim</td><td>Sim</td><td>-</td><td>-</td></tr>
+      <tr><td>Analytics</td><td>Sim</td><td>Sim</td><td>Sim</td><td>-</td><td>Sim</td></tr>
+      <tr><td>Media</td><td>Sim</td><td>Sim</td><td>Sim</td><td>-</td><td>-</td></tr>
+      <tr><td>Contas Sociais</td><td>Sim</td><td>Sim</td><td>-</td><td>-</td><td>-</td></tr>
+      <tr><td>Utilizadores</td><td>Sim</td><td>Sim</td><td>-</td><td>-</td><td>-</td></tr>
+    </table>
+  </div>
+
+  <!-- CAPITULO 14: FAQ -->
+  <div class="chapter" id="faq">
+    <h2>14. Perguntas Frequentes</h2>
+
+    <h3>Porque e que o meu post falhou?</h3>
+    <p>
+      As razoes mais comuns sao:
+    </p>
+    <ul>
+      <li>Token da conta social expirou &mdash; reconecte a conta</li>
+      <li>Conteudo viola as politicas da Meta (spam, conteudo proibido)</li>
+      <li>Limite de 25 posts/dia atingido para Instagram</li>
+      <li>Imagem com formato ou dimensao nao suportada pela rede</li>
+    </ul>
+    <p>Veja a mensagem de erro no post para detalhes especificos.</p>
+
+    <h3>Posso publicar o mesmo post em Facebook e Instagram?</h3>
+    <p>
+      Sim! Use a funcao <strong>Duplicar</strong> para criar uma copia do post,
+      selecione a outra conta como destino, e ajuste o conteudo se necessario
+      (Instagram tem limite de 2200 caracteres).
+    </p>
+
+    <h3>Os tokens das contas expiram?</h3>
+    <p>
+      Os tokens da Meta tem validade de 60 dias. A plataforma renova-os automaticamente
+      a cada 50 dias. Se a renovacao falhar (ex: utilizador removeu permissoes no Facebook),
+      a conta fica com estado "Token Expirado" e deve ser reconectada.
+    </p>
+
+    <h3>Quantos posts posso agendar?</h3>
+    <p>
+      Nao ha limite de posts agendados na plataforma. Contudo, o Instagram limita
+      a publicacao a 25 posts por dia por conta.
+    </p>
+
+    <h3>A geracao IA esta lenta. E normal?</h3>
+    <p>
+      Sim, a geracao com IA pode demorar 10-30 segundos dependendo da quantidade de posts
+      pedidos e da complexidade do briefing. A barra de progresso indica que o processo esta activo.
+    </p>
+
+    <h3>Posso usar a plataforma no telemovel?</h3>
+    <p>
+      A interface e responsiva e funciona em dispositivos moveis. O menu lateral
+      transforma-se num menu hamburguer em ecras pequenos. Para melhor experiencia,
+      recomendamos desktop ou tablet para edicao de posts.
+    </p>
+
+    <h3>Como desactivo as aprovacoes?</h3>
+    <p>
+      O Owner pode desactivar o fluxo de aprovacao nas configuracoes da organizacao.
+      Quando desactivado, posts criados vao directamente para estado "Agendado".
+    </p>
+
+    <h3>Os dados sao seguros?</h3>
+    <p>
+      Sim. Todos os tokens de acesso as redes sociais sao encriptados com AES-256-GCM.
+      A comunicacao e feita via HTTPS. Cada organizacao tem os seus dados completamente
+      isolados das outras (multi-tenancy).
+    </p>
+
+    <h3>Posso exportar os meus dados?</h3>
+    <p>
+      Pode exportar as metricas de analytics em formato CSV. Para outros dados,
+      contacte o suporte.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p><strong>COMUNICA Social</strong> &mdash; Plataforma de Gestao de Redes Sociais</p>
+    <p>Desenvolvido por COMUNICA &bull; Versao 1.0 &bull; Maio 2026</p>
+    <p style="margin-top: 0.5rem;">
+      Para suporte tecnico: suporte@comunica.ao
+    </p>
+  </div>
+
+</body>
+</html>
