@@ -15,7 +15,7 @@
     "db:deploy": "pnpm --filter @comunica/api run db:deploy",
     "db:seed": "pnpm --filter @comunica/api run db:seed",
     "db:studio": "pnpm --filter @comunica/api run db:studio",
-    "prepare": "husky"
+    "prepare": "node -e \"try{require('husky')()}catch(e){}\""
   },
   "engines": {
     "node": ">=20.0.0",
