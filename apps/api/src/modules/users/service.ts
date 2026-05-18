@@ -77,10 +77,26 @@ export async function inviteUser(tenantId: string, invitedById: string, input: I
     },
   });
 
-  // TODO: Send invite email
-  if (env.NODE_ENV === 'development') {
-    console.warn(`[DEV] Invite token for ${input.email}: ${token}`);
-    console.warn(`[DEV] Invite URL: ${env.APP_URL}/invite?token=${token}`);
+  const inviteUrl = `${env.APP_URL}/invite?token=${token}`;
+
+  if (env.NODE_ENV !== 'test') {
+    const { sendEmail, inviteUserEmail } = await import('../../lib/email.js');
+    const inviter = await prisma.user.findUnique({
+      where: { id: invitedById },
+      select: { name: true },
+    });
+    const tenant = await prisma.tenant.findUnique({
+      where: { id: tenantId },
+      select: { name: true },
+    });
+    const emailContent = inviteUserEmail(
+      inviteUrl,
+      inviter?.name ?? 'Admin',
+      tenant?.name ?? 'Equipa',
+    );
+    await sendEmail({ to: input.email, ...emailContent }).catch((err) => {
+      console.error('[EMAIL] Failed to send invite email:', err);
+    });
   }
 
   return { id: user.id, email: user.email, name: user.name, role: user.role, status: user.status };

@@ -25,6 +25,14 @@ const envSchema = z.object({
   // Anthropic
   ANTHROPIC_API_KEY: z.string().min(1),
 
+  // SMTP (Email)
+  SMTP_HOST: z.string().min(1),
+  SMTP_PORT: z.coerce.number().default(587),
+  SMTP_USER: z.string().min(1),
+  SMTP_PASS: z.string().min(1),
+  SMTP_FROM_NAME: z.string().default('COMUNICA Social'),
+  SMTP_FROM_EMAIL: z.string().email(),
+
   // App
   APP_URL: z.string().url(),
   API_URL: z.string().url(),

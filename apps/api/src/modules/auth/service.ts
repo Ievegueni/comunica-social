@@ -146,11 +146,15 @@ export async function forgotPassword(email: string) {
   const token = crypto.randomBytes(32).toString('hex');
   await redis.set(`reset:${token}`, user.id, 'EX', RESET_TOKEN_EXPIRY);
 
-  // TODO: Send email with reset link (Sprint 1 - email integration)
-  // For now, log the token in development
-  if (env.NODE_ENV === 'development') {
-    console.warn(`[DEV] Reset token for ${email}: ${token}`);
-    console.warn(`[DEV] Reset URL: ${env.APP_URL}/reset-password?token=${token}`);
+  const resetUrl = `${env.APP_URL}/reset-password?token=${token}`;
+
+  if (env.NODE_ENV !== 'test') {
+    const { sendEmail, resetPasswordEmail } = await import('../../lib/email.js');
+    const emailContent = resetPasswordEmail(resetUrl, user.name);
+    await sendEmail({ to: email, ...emailContent }).catch((err) => {
+      // Log but don't fail — user doesn't know if email exists
+      console.error('[EMAIL] Failed to send reset email:', err);
+    });
   }
 }
 
