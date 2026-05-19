@@ -17,10 +17,8 @@ COPY tsconfig.base.json ./
 COPY packages/shared/ ./packages/shared/
 COPY apps/api/ ./apps/api/
 
-# Generate Prisma client
+# Generate Prisma client and build
 RUN pnpm --filter @comunica/api run db:generate
-
-# Build
 RUN pnpm --filter @comunica/api run build
 
 # --- Production stage ---
@@ -34,11 +32,10 @@ COPY --from=builder /app/package.json /app/pnpm-workspace.yaml /app/pnpm-lock.ya
 COPY --from=builder /app/apps/api/package.json ./apps/api/
 COPY --from=builder /app/packages/shared/package.json ./packages/shared/
 
-RUN pnpm install --frozen-lockfile --prod
-
-# Re-generate Prisma client in production node_modules
+# Install all deps (not --prod) so prisma CLI is available
+RUN pnpm install --frozen-lockfile --ignore-scripts
 COPY --from=builder /app/apps/api/prisma ./apps/api/prisma
-RUN cd apps/api && npx prisma generate
+RUN cd apps/api && pnpm exec prisma generate
 
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 
@@ -46,4 +43,4 @@ WORKDIR /app/apps/api
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]
+CMD ["sh", "-c", "pnpm exec prisma migrate deploy && node dist/server.js"]
