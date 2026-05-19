@@ -32,8 +32,8 @@ COPY --from=builder /app/package.json /app/pnpm-workspace.yaml /app/pnpm-lock.ya
 COPY --from=builder /app/apps/api/package.json ./apps/api/
 COPY --from=builder /app/packages/shared/package.json ./packages/shared/
 
-# Install all deps (not --prod) so prisma CLI is available
-RUN pnpm install --frozen-lockfile --ignore-scripts
+# Install all deps so prisma CLI is available
+RUN HUSKY=0 pnpm install --frozen-lockfile
 COPY --from=builder /app/apps/api/prisma ./apps/api/prisma
 RUN cd apps/api && pnpm exec prisma generate
 
