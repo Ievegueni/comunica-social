@@ -10,7 +10,7 @@ COPY apps/web/package.json ./apps/web/
 COPY packages/shared/package.json ./packages/shared/
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN HUSKY=0 pnpm install --frozen-lockfile
 
 # Copy source
 COPY tsconfig.base.json ./
@@ -21,11 +21,14 @@ COPY apps/web/ ./apps/web/
 RUN pnpm --filter @comunica/web run build
 
 # --- Production stage ---
-FROM nginx:alpine AS runner
+FROM node:20-alpine AS runner
 
-COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
-COPY apps/web/nginx.conf /etc/nginx/templates/default.conf.template
+RUN npm install -g serve
 
-EXPOSE 80
+COPY --from=builder /app/apps/web/dist /app/dist
 
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+
+EXPOSE 3000
+
+CMD ["serve", "dist", "-s", "-l", "3000"]
